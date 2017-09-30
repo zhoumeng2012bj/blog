@@ -16,6 +16,8 @@ Route::get('/', function (){
     return view('home');
 });
 Route::resource('test', 'TestController');
+Route::get('test/list/{id}','TestController@getlist');
+
 Route::resource('role', 'Rbac\RoleController');
 Route::resource('purchaseContract','Contract\purchaseContractController');
 Route::get('permission/getAll','Rbac\PermissionController@getAll');

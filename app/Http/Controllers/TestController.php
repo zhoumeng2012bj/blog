@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\models\Role;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Qiniu\Auth;
 
 class TestController extends Controller
@@ -16,11 +17,41 @@ class TestController extends Controller
      */
     public function index()
     {
-        $role = Role::findOrFail(1);
-        dd($role);
-        //
-        return view('test');exit;
+        set_time_limit(0);
+        $arr = [120,400,390,188,118,150,230,350,250,300,130,290,380,260,280,30,200,100,50];
+        $new = [];
+        foreach ($arr as $key =>$value){
+            foreach ($arr as $k1=>$v1){
+                $sort = [];
+                $sort[] = $value;
+                $sort[] = $v1;
+                $new[$this->numSort($sort)]['type'] = $this->numSort($sort);
+                $new[$this->numSort($sort)]['total'] = $value+$v1;
+            }
+        }
+        foreach ($arr as $key =>$value){
+            foreach ($arr as $k1=>$v1){
+                foreach ($arr as $k2=>$v2){
+                    $sort = [];
+                    $sort[] = $value;
+                    $sort[] = $v1;
+                    $sort[] = $v2;
+                    $new[$this->numSort($sort)]['type'] = $this->numSort($sort);
+                    $new[$this->numSort($sort)]['total'] = $value+$v1+$v2;
+                }
+            }
+        }
 
+        foreach ($new as $k=>$v){
+            foreach ($arr as $k1=>$v1){
+                $sort = [];
+                $sort[] = $v['type'];
+                $sort[] = $v1;
+                $new[$this->numSort($sort)]['type'] = $this->numSort($sort);
+                $new[$this->numSort($sort)]['total'] = $v['total']+$v1;
+            }
+        }
+        DB::table('suan')->insert($new);
 
     }
 
@@ -53,7 +84,11 @@ class TestController extends Controller
      */
     public function show($id)
     {
-        //
+
+    }
+    public function getlist($id){
+        $total  = DB::table('suan')->where('total',$id)->get();
+        return $total;
     }
 
     /**
@@ -88,5 +123,9 @@ class TestController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function numSort($arr){
+        sort($arr);
+        return implode('+',$arr);
     }
 }
