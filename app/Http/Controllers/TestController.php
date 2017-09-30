@@ -87,7 +87,7 @@ class TestController extends Controller
 
     }
     public function getlist($id){
-        $total  = DB::table('suan')->where('total',$id)->get();
+        $total  = DB::table('suan')->where('total',$id)->take(5)->get();
         return $total;
     }
 
