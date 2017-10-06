@@ -22,8 +22,8 @@ Route::get('permission/getAll','Rbac\PermissionController@getAll');
 Route::get('permission/role/{id}','Rbac\PermissionController@getPermission');
 Route::get('permission/list','Rbac\PermissionController@getPermissionList');
 Route::post('permission/update/{id}','Rbac\PermissionController@update');
-
-
+Route::resource('validate', 'ValidateController');
+Route::get('sso','ValidateController@sso');
 Route::post('logout','Auth\LoginController@logout');
 Route::post('login','Auth\LoginController@index');
 

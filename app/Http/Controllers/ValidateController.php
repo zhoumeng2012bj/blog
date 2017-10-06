@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\models\Role;
+use App\Http\Controllers\Controller;
+use App\User;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
-use Qiniu\Auth;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
 
-class TestController extends Controller
+class ValidateController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,17 +17,33 @@ class TestController extends Controller
      */
     public function index()
     {
-      $tokenName=Input::get('sso');
+     // dd(111);
+
+      $tokenName=Input::get('token');
       $key1=Input::get('server-key');
+      if(empty($tokenName)){
+          return   Redirect::to('/#/login?returnurl='.Input::get('returnurl'));
+      }
+      //dd($tokenName);
       $user= User::where('remember_token',$tokenName)->get();
       if(empty($user)){
-
+          return   Redirect::to('/#/login?returnurl='.Input::get('returnurl'));
       }
       else{
-          return json_decode($user);
+         return json_decode($user)  ;
       }
     }
 
+    public function sso()
+    {
+       // dd(111);
+
+        $returnurl=Input::get('returnurl');
+        if(empty(Auth::user())){
+            return   Redirect::to('/#/login?returnurl='.$returnurl);
+        }
+
+    }
     /**
      * Show the form for creating a new resource.
      *

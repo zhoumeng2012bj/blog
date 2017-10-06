@@ -49,7 +49,7 @@
                         //_this.$router.replace('/table');
                         this.logining = true;
                         //NProgress.start();
-                        var loginParams = { email: this.ruleForm2.account, password: this.ruleForm2.checkPass };
+                        var loginParams = { email: this.ruleForm2.account, password: this.ruleForm2.checkPass  };
                         requestLogin(loginParams).then(data => {
 
                             this.logining = false;
@@ -62,8 +62,7 @@
                                     type: 'error'
                                 });
                             } else {
-                                sessionStorage.setItem('user', JSON.stringify(user));
-                                this.$router.push({ path: '/' });
+                               window.location.href=this.$route.query.returnurl+'?token='+user.remember_token;
                             }
                         });
                     } else {
